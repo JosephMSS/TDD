@@ -15,18 +15,23 @@ class ProfileTest extends TestCase
      *
      * @return void
      */
-    public function test_upload()
-    {   
-        Storage::fake('local');
-$width=720;
-$height=1080;
-        $response = $this->post('/profile', [
-            'photo' => $photo = UploadedFile::fake()->image('avatar.jpg', $width, $height)->size(100)  
-
-        ]);
-
-        Storage::disk('local')->assertFileExists("profiles/{$photo->hashName()}");
-
-        $response->assertRedirect('profile');
+    public function test_photo_require()
+    {
+    $response=$this->post('profile',['photo'=>'']);
+    $response->assertSessionHasErrors('photo');
     }
+//     public function test_upload()
+//     {   
+//         Storage::fake('local');
+// $width=720;
+// $height=1080;
+//         $response = $this->post('/profile', [
+//             'photo' => $photo = UploadedFile::fake()->image('avatar.jpg', $width, $height)->size(100)  
+
+//         ]);
+
+//         Storage::disk('local')->assertFileExists("profiles/{$photo->hashName()}");
+
+//         $response->assertRedirect('profile');
+//     }
 }
